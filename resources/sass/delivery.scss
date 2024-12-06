@@ -1,0 +1,114 @@
+@import '~toastr/toastr';
+@import '~@mdi/font/css/materialdesignicons.css';
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance:textfield;
+}
+
+.v-text-field.v-text-field--enclosed .v-text-field__details {
+
+}
+
+.theme--light.v-input--is-disabled .v-label, .theme--light.v-input--is-disabled input, .theme--light.v-input--is-disabled textarea {
+    color: rgba(0, 0, 0, 1) !important;
+}
+
+.theme--light.v-data-table tbody tr:hover:not(.v-data-table__expand-row) {
+    background: #d8c6c6 !important;
+}
+
+.v-data-table {
+    -webkit-box-shadow: 12px 13px 23px -5px rgba(79, 81, 82, 1);
+    -moz-box-shadow: 12px 13px 23px -5px rgba(79, 81, 82, 1);
+    box-shadow: 12px 13px 23px -5px rgba(79, 81, 82, 1);
+    padding: 5px;
+}
+
+th {
+    text-align: left;
+}
+
+header {
+    background-color: rgba(16, 69, 140, 1);
+
+    .header {
+        display: grid;
+        justify-content: stretch;
+        grid-template-columns: 2fr 2fr 5fr 1fr 1fr;
+        color: #fff;
+        align-items: center;
+
+        .user {
+            justify-self: center;
+        }
+        .back{
+            justify-content: center;
+            display: grid;
+            a {
+                font-size: 1.2rem;
+                grid-auto-flow: column;
+                display: grid;
+                align-items: center;
+                color: #fff;
+                text-decoration: none;
+                &:hover{
+                    color: darkslategrey;
+                }
+            }
+        }
+        .logout {
+            svg {
+                justify-self: end;
+            }
+
+            a {
+                grid-auto-flow: column;
+                display: grid;
+                align-items: center;
+                color: #fff;
+                text-decoration: none;
+                &:hover{
+                    color: darkslategrey;
+                }
+            }
+        }
+
+        .station{
+            display: grid;
+            grid-auto-flow: column;
+            align-items: center;
+            grid-gap: 5px;
+            .v-text-field__details{
+                display: none;
+            }
+        }
+
+    }
+}
+
+.wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 15px;
+
+    .left {
+    }
+
+    .right {
+
+    }
+}
+
+@media (max-width: 991.98px) {
+    .wrap {
+        grid-template-columns: 1fr;
+        grid-gap: 30px;
+    }
+}

@@ -1,0 +1,50 @@
+{
+  "private": true,
+  "scripts": {
+    "dev": "npm run development",
+    "development": "mix",
+    "watch": "mix watch",
+    "watch-poll": "mix watch -- --watch",
+    "hot": "mix watch --hot",
+    "prod": "npm run production",
+    "production": "mix --production"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^3.10.1",
+    "@typescript-eslint/parser": "^3.10.1",
+    "axios": "^0.21.1",
+    "bootstrap": "^4.6.0",
+    "browser-sync": "^2.26.14",
+    "browser-sync-webpack-plugin": "^2.3.0",
+    "jquery": "^3.6.0",
+    "laravel-mix": "^6.0.49",
+    "resolve-url-loader": "^5.0.0",
+    "sass": "^1.32.11",
+    "sass-loader": "^8.0.2",
+    "ts-loader": "^6.2.2",
+    "typescript": "^3.9.9",
+    "vue": "^2.6.12",
+    "vue-loader": "15.9.8",
+    "vue-router": "^3.5.1",
+    "vue-template-compiler": "^2.6.12"
+  },
+  "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^17.0.0",
+    "@ckeditor/ckeditor5-vue": "^1.0.3",
+    "@mdi/font": "^5.9.55",
+    "@vue/eslint-config-standard": "^5.1.2",
+    "ckeditor4-vue": "^0.2.0",
+    "debounce": "^1.2.1",
+    "element-ui": "^2.15.1",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "pm2": "^5.2.2",
+    "prettier": "^2.0.5",
+    "sweetalert2": "^9.17.2",
+    "toastr": "^2.1.4",
+    "vee-validate": "2.2.15",
+    "vue-json-excel": "^0.2.99",
+    "vuejs-datepicker": "^1.6.2",
+    "vuetify": "^2.4.11"
+  }
+}

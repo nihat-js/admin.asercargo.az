@@ -1,0 +1,471 @@
+.navbar-color {
+    background: #10458c;
+}
+ul.nav.navbar-nav li a:hover {
+    background: none;
+}
+ul.nav.navbar-nav  li a:hover {
+    border-bottom: 2px solid #fcffff;
+    color:whitesmoke;
+}
+ul.nav.navbar-nav li a:focus {
+    background: none;
+    color:white;
+}
+ul.nav.navbar-nav.navbar-right li a:hover {
+    border: none;
+}
+.references-content h1 {
+    font-weight: 600;
+    text-shadow: 1px 1px 1px;
+    font-size: 50px;
+    color: #10458c;
+    display: inline-block;
+    padding-top: 74px;
+    padding-bottom: 15px;
+}
+section.references {
+    padding-top: 113px;
+    padding-bottom: 113px;
+
+    text-align: center;
+    background-size: 100%;
+    background-image: url(../img/new_everglory_slide.jpg);
+    background-position: 120% -46%;
+}
+
+.references-content{
+    position: relative;
+}
+
+.references-content h1:before {
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    /* transform: translateX(-50%); */
+    content: '';
+    bottom: 0;
+    width: 133px;
+    height: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    background-color: #f7c02d;
+    position: absolute;
+}
+table.references-table, tr td {
+    border: 1px dotted;
+}
+.row.middle {
+    margin-top: 40px;
+}
+a.show-but {
+    background: #10458c;
+    padding: 7px 17px;
+    border-radius: 6px;
+    font-weight: 600;
+}
+a.show-but:hover {
+    transition: 1s;
+    background: #f99122;
+    color: white;
+    text-decoration: none;
+}
+.row.middle table.references-table thead tr th {
+    padding: 9px 2px;
+}
+p.grand-total input {
+    display: inline-block;
+    width: 20%;
+    margin-left: 12px;
+}
+p.grand-total {
+    margin-bottom: 40px;
+}
+.invoice-det {
+    padding: 12px;
+    height: 163px;
+
+}
+table.references-table.unit th {
+    padding: 10px 47px;
+}
+.top-static .col-md-4 {
+    background:#bae1f7;
+    border-right: 1px solid #ffffff;
+    border-radius: 11px;
+    margin-bottom: 28px;
+}
+p.grand-total label {
+    position: relative;
+    top: 10px;
+}
+table.references-table.invoice tr th {
+    padding: 15px;
+}
+tr:nth-child(odd) {
+    background-color: rgb(251, 252, 254);
+}
+.ff {
+    background: url(img/new_everglory_slide.jpg);
+    background-size: cover!important;
+    height: 100vh;
+}
+tr:nth-child(even) {
+    background-color: #fdfaf6;
+}
+
+table.references-table thead tr th{
+    padding: 17px 6px;
+    text-align: center;
+}
+table.references-table tr td{
+    padding: 3px 10px;
+    text-align: center;
+    color: #10458c;
+}
+table {
+    background-color: #10458c;
+}
+thead th {
+    background-color: #fdfaf6;
+    color: #10458c;
+    text-shadow: 1px 1px 1px #88bcd9;
+    border: 1px dotted #10458c;
+}
+
+.menu-heading h2 {
+    padding-bottom: 24px;
+    font-weight: 600;
+    color: #10458c;
+    text-shadow: 1px 1px 1px #10458c;
+}
+
+table.references-table.services tr th {
+    padding: 15px 15px;
+}
+
+section.references-main {
+    margin: 0 0 140px;
+}
+
+
+font {
+    vertical-align: middle;
+    top: 3px;
+    position: relative;
+}
+
+.form label {
+    font-size: 17px;
+    padding-top: 7px;
+    color: #101926;
+    float: left;
+}
+input {
+    padding: 10px;
+    border: 1px solid #E5E5E5;
+    border-radius: 3px;
+    width: 60%;
+    float: right;
+    outline-color: #ffa500;
+    color: #999999;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px;
+    -moz-box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px;
+    -webkit-box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px;
+}
+input[type="reset"] {
+    float: right;
+}
+
+.submit input {
+    width: 28%;
+    font-family: roboto condensed;
+    height: 40px;
+    cursor: pointer;
+    font-size: 16px;
+    background-color: #101926;
+    color: #FFF;
+    border-radius: 6px !important;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+.form p {
+    padding: 6px;
+    height: 40px;
+}
+.modal-heading {
+    color: #101926;
+    border-left: 3px solid #101926;
+    padding: 6px 12px;
+    font-weight: bold;
+    text-shadow: 1px 1px 1px #787b7e;
+    font-size: 21px;
+}
+.sec select {
+    border: 1px solid #E5E5E5;
+    width: 65%;
+    float: right;
+    padding: 6px;
+    border-radius: 3px;
+    color: #999999;
+    outline-color: #ffa500;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px;
+    -moz-box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px;
+    -webkit-box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px;
+}
+
+p.sec textarea {
+    padding: 10px;
+    border: 1px solid #E5E5E5;
+    border-radius: 3px;
+    width: 57%;
+    height: 89px;
+    float: right;
+    outline-color: #ffa500;
+    color: #999999;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px;
+    -moz-box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px;
+    -webkit-box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px;
+}
+
+
+p.sec.text-area {
+    height: 90px;
+}
+
+
+
+
+
+
+
+
+@media(min-width: 768px){
+    li.active a {
+        border-bottom: 2px solid #2faaa5;
+    }
+
+    .references-content h1 {
+        position: relative;
+        left: 285px;
+    }
+
+    .active-parent{
+        border-bottom: 2px solid #2faaa5;
+    }
+}
+@media(min-width: 1400px) and (max-width: 2000px){
+
+    section.references {
+        background-position: 120% -18%;
+    }
+}
+
+
+
+/*login*/
+
+.login-page {
+    width: 360px;
+    padding: 8% 0 0;
+    margin: auto;
+}
+.form button {
+    font-family: "Roboto", sans-serif;
+    text-transform: uppercase;
+    outline: 0;
+    background: #3571a5;
+    width: 100%;
+    border: 0;
+    padding: 15px;
+    color: #FFFFFF;
+    font-size: 14px;
+    -webkit-transition: all 0.3 ease;
+    transition: all 0.3 ease;
+    cursor: pointer;
+}
+form.login-form input {
+    width: 100%;
+    margin: 0 0 15px;
+    outline: 0;
+    background: #f2f2f2;
+
+    border: 0;
+
+    padding: 15px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+.form.yy {
+    background: #3571a58c;
+    padding: 47px;
+}
+
+
+
+/*new*/
+
+.search-input {
+    display: inline-block;
+    max-width: 155px;
+    margin: 2px;
+    float: left;
+}
+
+.search-areas {
+    display: block;
+}
+
+#search-cost-area, #search-date-area {
+    display: none;
+}
+
+td {
+    white-space: nowrap;
+}
+.dropdown-menu{
+    background: #10458c;
+}
+.dropdown-menu > li > a {
+    color: white;
+
+}
+.columns {
+    cursor: pointer;
+}
+
+.dropdown-menu > li > a:hover {
+    color: #fff7f7 !important;
+}
+
+.action-btn {
+    cursor: pointer;
+}
+ul.nav.navbar-nav.navbar-right li:nth-child(4) {
+    border-left: 3px solid white;
+}
+.selected_row {
+    background-color: #acecff !important;
+}
+
+td > a {
+    color: black;
+}
+
+.active-sec {
+    color: #5cb85c;
+}
+
+.sec > textarea {
+    padding: 10px;
+    border: 1px solid #E5E5E5;
+    border-radius: 3px;
+    width: 57%;
+    float: right;
+    outline-color: #ffa500;
+    color: #999999;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px;
+    -moz-box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px;
+    -webkit-box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px;
+}
+
+.details-action-btn {
+    color: #101926;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.swal2-container {
+    z-index: 999999;
+}
+
+.default_contract {
+    background-color: #bdff86 !important;
+}
+
+/*Switch*/
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 47px;
+    height: 20px;
+    margin-bottom: 0;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 13px;
+    width: 13px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+.nav-tabs > li > a {
+    color: black;
+}
+
+/*for collector*/
+
+#menu-links > li > a {
+    color: white !important;
+}
+
+#menu-links > .dropdown > ul > li > a {
+    color: white !important;
+}
+
+#menu-links > .dropdown > ul {
+    background-color: #10458c !important;
+}
+
+
+@media only screen and (max-width: 768px) {
+    body {
+        padding-top: 10rem;
+    }
+}

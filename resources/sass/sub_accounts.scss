@@ -1,0 +1,64 @@
+@import '~@mdi/font/css/materialdesignicons.css';
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+
+.v-text-field.v-text-field--enclosed .v-text-field__details {
+
+}
+
+.theme--light.v-input--is-disabled .v-label, .theme--light.v-input--is-disabled input, .theme--light.v-input--is-disabled textarea {
+  color: rgba(0, 0, 0, 1) !important;
+}
+
+.theme--light.v-data-table tbody tr:hover:not(.v-data-table__expand-row) {
+  background: #d8c6c6 !important;
+}
+
+.v-data-table {
+  -webkit-box-shadow: 12px 13px 23px -5px rgba(79, 81, 82, 1);
+  -moz-box-shadow: 12px 13px 23px -5px rgba(79, 81, 82, 1);
+  box-shadow: 12px 13px 23px -5px rgba(79, 81, 82, 1);
+  padding: 5px;
+}
+
+th {
+  text-align: left;
+}
+
+.green {
+  background-color: green;
+}
+
+.wrap {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 15px;
+  margin: 20px;
+
+  .top {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+    grid-gap: 10px;
+
+    .buttons {
+      display: grid;
+      grid-template: inherit;
+      grid-gap: 20px;
+    }
+  }
+
+  .bottom {
+    display: grid;
+    grid-gap: 10px;
+    overflow: auto;
+  }
+}

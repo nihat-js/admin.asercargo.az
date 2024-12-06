@@ -1,0 +1,26 @@
+header {
+  background-color: rgba(16, 69, 140, 1);
+}
+
+@import '~@mdi/font/css/materialdesignicons.css';
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.theme--light.v-application {
+  background: unset !important;
+}
+
+.v-application--wrap {
+  min-height: auto !important;
+  //background: rgb(240, 104, 42)!important;
+}
+
+.dateClass {
+  height: auto;
+  border: 1px solid grey;
+  border-radius: 5px;
+  padding: 11px;
+}

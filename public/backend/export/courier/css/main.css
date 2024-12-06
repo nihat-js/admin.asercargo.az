@@ -1,0 +1,41 @@
+.border-bottom{
+    border-bottom: 1px solid black;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+}
+.bold{
+    font-weight: bold;
+}
+.margin-top{
+    margin-top: 20px;
+}
+.vertical{
+    writing-mode:vertical-rl;
+    text-orientation: upright;
+    letter-spacing: 2px;
+
+}
+.table{
+    text-align: center;
+}
+.th th{
+    text-align: center!important;
+
+}
+
+.table > thead > tr > th,
+.table > tbody > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > td{
+    padding: 7px!important;
+    vertical-align: middle;
+}
+th.tehvil {
+    font-size: 10px;
+    padding: 0px!important;
+}
+
+/*.address-column {*/
+/*    max-width: 50px;*/
+/*}*/

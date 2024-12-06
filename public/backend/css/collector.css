@@ -1,0 +1,167 @@
+/*Images gallery*/
+div.gallery {
+    border: 1px solid #ccc;
+}
+
+div.gallery > a {
+    cursor: zoom-in;
+}
+
+div.gallery:hover {
+    border: 1px solid #777;
+}
+
+div.gallery img {
+    width: 100%;
+    height: 200px;
+}
+
+div.delete_image {
+    padding: 5px;
+    text-align: center;
+    cursor: pointer;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.responsive {
+    padding: 0 6px;
+    float: left;
+    width: 24.99999%;
+}
+
+@media only screen and (max-width: 700px) {
+    .responsive {
+        width: 49.99999%;
+        margin: 6px 0;
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    .responsive {
+        width: 100%;
+    }
+}
+
+.clearfix:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/* -------------  collector  ----------------*/
+.references-in{
+    display: grid;
+    grid-template-columns: 1fr 0fr;
+}
+
+.tables{
+    font-size: 12px!important;
+    max-height: 85vh;
+    overflow: scroll;
+}
+.tables>.table{
+    overflow: auto;
+    /*max-height: 285px;*/
+}
+.forms{
+    display: grid;
+    font-size: 14px!important;
+}
+.form_files_selects{
+    display: grid;
+    grid-template-columns: 1fr 0fr;
+}
+.form_selects{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: center;
+}
+.form_selects>p{
+}
+
+.form_files_selects>div{
+    display: grid;
+    grid-gap: 5px;
+}
+
+.form_inputs{
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+}
+.description{
+    grid-column: 1/4;
+}
+.legal_entity {
+    width: 20px;
+    height: 20px;
+    position: relative;
+    left: -30px;
+}
+.description>input{
+    width: 80%;
+}
+.form_inputs>p{
+    padding: 0 10px;
+}
+.form_tracking_suite{
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: 1fr;
+    padding: 0 10px;
+}
+
+
+.form_tracking_suite_2>div{
+    padding-left: 10px;
+    padding-right: 10px;
+}
+/*.form_suite{
+    padding-top: 30px ;
+}*/
+.form_tracking_suite_2>div>p{
+    margin: 0 0 15px;
+}
+.form_tracking_suite>div{
+    display: grid;
+}
+.generate_tracking{
+    display: block;
+    width: 150px;
+    margin-bottom: 10px;
+}
+.btn-basic {
+    background-color: grey;
+    color: white;
+}
+.alerts{
+    padding-left: 10px;
+}
+#save-btn{
+    grid-column: 1/2;
+}
+label{
+    padding-top: 10px;
+}
+
+/*.other_seller{*/
+/*    grid-column: 1/4;*/
+/*}*/
+/*.other_seller>input{*/
+/*    float: none;*/
+/*    width: 70%;*/
+/*}*/
+
+.form_files_file{
+    margin: 20px 5px;
+}
+#ok_to_send{
+    padding: 9px 12px;
+    font-size: 13px;
+}
+
+#invoice_status_indicator{
+    padding: 12px 12px;
+}
