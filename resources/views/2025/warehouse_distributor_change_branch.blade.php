@@ -18,20 +18,20 @@
         <h2 class="text-primary">Aser Express</h2>
       </div>
 
-      <div class="user">
+      <!-- <div class="user">
         <h2 class="text-secondary">Dev.</h2>
-      </div>
+      </div> -->
 
       <div class="d-flex gap-2">
-        <button type="button" class="btn btn-primary"> Change Status </button>
+        <!-- <button type="button" class="btn btn-primary"> Change Status </button> -->
 
-        <a href="http://localhost:8001/warehouse/distributor/detained-at-customs" class="btn btn-primary">
+        <!-- <a href="http://localhost:8001/warehouse/distributor/detained-at-customs" class="btn btn-primary">
           Detained at Customs
         </a>
 
         <a href="http://localhost:8001/warehouse/distributor/change-branch" class="btn btn-success">
           Change Package Branch
-        </a>
+        </a> -->
       </div>
 
       <div class="logout">

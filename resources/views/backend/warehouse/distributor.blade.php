@@ -91,7 +91,7 @@
 					</div>
 				</template>
 			</div>
-			<div class="new">
+			<div class="new flex">
 				<v-btn
 								color="#6779fb"
 								href="{{route('warehouse_detained_at_customs_page')}}"
@@ -101,11 +101,19 @@
 					Detained at Customs
 				</v-btn>
 				<v-btn
-								color="#afe921"
+								color="#6779fb"
 								href="{{route('warehouse_change_package_branch_view')}}"
 								dark
 				>
 					Change Package Branch
+				</v-btn>
+
+				<v-btn
+								color="#6779fb"
+								href="{{route('warehouse_change_package_in_baku_view')}}"
+								dark
+				>
+					Change Package in Baku
 				</v-btn>
 
 			</div>

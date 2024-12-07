@@ -35,6 +35,7 @@ new Vue({
   },
   methods: {
     changeStatus (url) {
+      console.log("o")
       let _this          = this
       this.loadingButton = true
       let flight         = this.flight_id

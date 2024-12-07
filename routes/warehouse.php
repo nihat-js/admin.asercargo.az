@@ -22,6 +22,9 @@ Route::group(['prefix' => '/warehouse', 'middleware' => 'Delivery'], function ()
         Route::post('/detained-at-customs-notification', 'DistributorController@detained_at_customs_notification')->name("warehouse_detained_at_customs_notification");
         Route::get("/change-branch", "DistributorController@changePackageBranchView")->name("warehouse_change_package_branch_view");
         Route::post("/change-branch", "DistributorController@changePackageBranch")->name("warehouse_change_package_branch");
+
+        Route::get("/change-in-baku", "DistributorController@changePackageInBakuView")->name("warehouse_change_package_in_baku_view");
+        Route::post("/change-in-baku", "DistributorController@changePackageInBaku")->name("warehouse_change_package_in_baku");
     });
 
     Route::group(['prefix' => '/partner'], function (){
