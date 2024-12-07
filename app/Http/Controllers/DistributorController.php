@@ -136,86 +136,45 @@ class DistributorController extends HomeController
         return view("2025/warehouse_distributor_change_branch", compact("branches"));
     }
 
-    public function changePackageBranch(Request $request)
-    {
+    public function changePackageBranch(Request $request){
+        // dd($request->all());
+        // return response()->json($request->all());   
         $validator = Validator::make($request->all(), [
-            'track' => ['required', 'string', 'max:255'],
-            'position' => ['required', 'string', 'max:100'],
+            'branch_id' => ['required', 'integer'],
+            'package' => ['required', 'string'],
         ]);
         if ($validator->fails()) {
-            return response(['case' => 'warning', 'title' => 'Warning!', 'type' => 'validation', 'content' => $validator->errors()->toArray()]);
+            return response(['case' => 'warning', 'title' => 'Warning!', 'content' => 'Not valid data']);
         }
-        try {
-            $user_id = Auth::id();
-            $user_location_id = Auth::user()->location();
-            $branch = Auth::user()->branch();
+        $package = Package::where('number', $request->package)
+            ->orWhere("internal_id",$request->package)
+            // ->where("deleted_by",null)
+            ->first();
 
-            // dd($user_id);
-            // dd(Auth::user()->branch());
-
-            $position_no = $request->position;
-            $package_number = $request->track;
-
-            if (substr($package_number, 0, 8) == '42019801') {
-                $package_number_search = substr($package_number, -22);
-                $package = Package::whereRaw("(number = '" . $package_number_search . "' or internal_id = '" . $package_number_search . "')")
-                    ->whereNull('deleted_by')
-                    ->whereNull('delivered_by')
-                    ->orderBy('id', 'desc')
-                    ->select('id', 'number', 'in_baku', 'client_id', 'branch_id')
-                    ->first();
-
-                if (!$package) {
-                    $package_number_search = substr($package_number, 10, strlen($package_number) - 1);
-                    $package = Package::whereRaw("(number = '" . $package_number_search . "' or internal_id = '" . $package_number_search . "')")
-                        ->whereNull('deleted_by')
-                        ->whereNull('delivered_by')
-                        ->orderBy('id', 'desc')
-                        ->select('id', 'number', 'in_baku', 'client_id', 'branch_id')
-                        ->first();
-                }
-            } else {
-                $package_number_search = $package_number;
-                $package = Package::whereRaw("(number = '" . $package_number_search . "' or internal_id = '" . $package_number_search . "')")
-                    ->whereNull('deleted_by')
-                    ->whereNull('delivered_by')
-                    ->orderBy('id', 'desc')
-                    ->select('id', 'number', 'in_baku', 'client_id', 'branch_id')
-                    ->first();
-            }
-
-            if (!$package) {
-                return response(['case' => 'warning', 'title' => 'Oops!', 'content' => 'Package not found!']);
-            }
-
-            if ($branch !== $package->branch_id) {
-                return response(['case' => 'branch', 'title' => 'Oops!', 'content' => 'This package does not belong to your office!']);
-            }
-
-            $package_id = $package->id;
-            $in_baku = $package->in_baku;
-
-            $position = Position::where('name', $position_no)->whereNull('deleted_by')
-                ->where('location_id', $user_location_id)
-                ->orderBy('id', 'desc')
-                ->select('id')
-                ->first();
-
-            if (!$position) {
-                return response(['case' => 'warning', 'title' => 'Oops!', 'content' => 'Position is not found at your location!']);
-            }
-
-            $position_id = $position->id;
-
-            $job = (new WarehouseChangeStatusJob($package_id, $user_id, $position_id, $in_baku));
-
-            dispatch($job);
-
-            return response(['case' => 'success', 'change' => true, 'content' => 'Position is changed! ' . $package->id, 'track' => $package->number]);
-        } catch (\Exception $exception) {
-            //dd($exception);
-            return response(['case' => 'error', 'title' => 'Error!', 'content' => 'Something went wrong!']);
+        if (!$package) {
+            return response(['case' => 'warning', 'title' => 'Oops!', 'content' => 'Package not found (Package paid or delivered or issued to courier)!']);
         }
+        if ($package->branch_id == $request->branch_id) {
+            return response(['case' => 'warning', 'title' => 'Oops!', 'content' => 'The old and new branches are the same!']);
+        }
+        if (in_array($package->last_status_id, [5, 14, 38, 39, 40])) {
+            return response([
+                'case' => 'error',
+                'title' => 'Oops!',
+                'content' => 'Can not change branch in status ' . $package->status_en
+            ]);
+        }
+
+        $package->update([
+                'branch_id' => $request->branch_id
+            ]);
+        DB::insert('insert into change_package_branch_log (package_id, old_branch_id, new_branch_id, user_id) values (?, ?, ?, ?)', [
+            $request->package,
+            $package->branch_id,
+            $request->branch_id,
+            Auth::user()->id,
+        ]);
+        return response(['case' => 'success', 'title' => 'Success!', 'content' => 'Branch is changed!']);
     }
 
 
