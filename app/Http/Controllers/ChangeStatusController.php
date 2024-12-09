@@ -250,9 +250,9 @@ class ChangeStatusController extends HomeController
                             if ($client_id_for_email != 0) {
                                 $email_content = str_replace('{list_inside}', $list_insides, $email_content);
     
-                                $job = (new CollectorInWarehouseJob($email_to, $email_title, $email_subject, $email_content, $email_bottom, $email_button))
-                                    ->delay(Carbon::now()->addSeconds(10));
-                                dispatch($job);
+                                // $job = (new CollectorInWarehouseJob($email_to, $email_title, $email_subject, $email_content, $email_bottom, $email_button))
+                                //     ->delay(Carbon::now()->addSeconds(10));
+                                // dispatch($job);
                             }
     
                             $list_insides = '';
