@@ -76,10 +76,10 @@ class ChangeStatusController extends HomeController
                 ->leftJoin('users as client', 'package.client_id', '=', 'client.id')
                 ->leftJoin('seller', 'package.seller_id', '=', 'seller.id')
                 ->where(['con.flight_id' => $request->flight, 'package.in_baku' => 1])
-                // ->where('package.sms_sent', '<>', 1)
-                // ->where('package.is_warehouse', '<>', 3) //
-                // ->whereNull('package.customs_date')
-                // ->whereNull('package.delivered_by')
+                ->where('package.sms_sent', '<>', 1)
+                ->where('package.is_warehouse', '<>', 3) //
+                ->whereNull('package.customs_date')
+                ->whereNull('package.delivered_by')
                 ->select('package.number', 'client.phone1 as phone', 'package.id', 'package.client_id', 'client.client_sent_sms', 'package.is_warehouse', 'client.name', 'client.surname', 'client.email', 'seller.name as store','package.seller_id', 'package.hash', 'package.sms_sent', 'client.language', 'c.name_az as country','flt.id as flight_id','flt.name as flight_name','package.branch_id as branch_id')
                 ->orderBy('package.client_id');
                 // ->get();
@@ -89,7 +89,7 @@ class ChangeStatusController extends HomeController
             }
             $packages = $packages->get();
 
-            return response()->json($packages);
+            // return response()->json($packages);
 
 
 
@@ -117,8 +117,8 @@ class ChangeStatusController extends HomeController
                 }
             }
 
-            // $send_notification = $this->in_baku_notification($packages, $email);
-            $send_notification = true;
+            $send_notification = $this->in_baku_notification($packages, $email);
+            // $send_notification = true;
 
             if (!$send_notification) {
                 if (Auth::user()->role() == 1) {
@@ -307,9 +307,9 @@ class ChangeStatusController extends HomeController
             if ($client_id_for_email != 0) {
                 $email_content = str_replace('{list_inside}', $list_insides, $email_content);
 
-                $job = (new CollectorInWarehouseJob($email_to, $email_title, $email_subject, $email_content, $email_bottom, $email_button))
-                    ->delay(Carbon::now()->addSeconds(10));
-                dispatch($job);
+                // $job = (new CollectorInWarehouseJob($email_to, $email_title, $email_subject, $email_content, $email_bottom, $email_button))
+                    // ->delay(Carbon::now()->addSeconds(10));
+                // dispatch($job);
             }
 
             // change status warehouse
@@ -368,17 +368,17 @@ class ChangeStatusController extends HomeController
 
                         array_push($package_arr_for_sms, $package->id);
 
-                        SmsTask::create([
-                            'type' => 'in_baku',
-                            'code' => $response_code,
-                            'task_id' => $task_id,
-                            'control_id' => $control_id,
-                            'package_id' => $package->id,
-                            'client_id' => $package->client_id,
-                            'number' => $package->phone,
-                            'message' => $text,
-                            'created_by' => Auth::id()
-                        ]);
+                        // SmsTask::create([
+                        //     'type' => 'in_baku',
+                        //     'code' => $response_code,
+                        //     'task_id' => $task_id,
+                        //     'control_id' => $control_id,
+                        //     'package_id' => $package->id,
+                        //     'client_id' => $package->client_id,
+                        //     'number' => $package->phone,
+                        //     'message' => $text,
+                        //     'created_by' => Auth::id()
+                        // ]);
                     }
 
                     if ($i > 0) {
