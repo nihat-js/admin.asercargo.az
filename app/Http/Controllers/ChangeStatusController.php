@@ -53,7 +53,8 @@ class ChangeStatusController extends HomeController
     public function post_packages_in_baku(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'flight' => 'required|integer'
+            'flight' => 'required|integer',
+            "branch" => 'sometimes|integer'
         ]);
         if ($validator->fails()) {
             if (Auth::user()->role() == 1) {
@@ -66,6 +67,7 @@ class ChangeStatusController extends HomeController
                 return response(['case' => 'warning', 'title' => 'Warning!', 'content' => 'Flight not found!']);
             }
         }
+        // return response()->json($request->all());
         try {
             $packages = Package::leftJoin('container as con', 'package.last_container_id', '=', 'con.id')
                 ->leftJoin('flight as flt', 'con.flight_id', '=', 'flt.id')
@@ -74,13 +76,21 @@ class ChangeStatusController extends HomeController
                 ->leftJoin('users as client', 'package.client_id', '=', 'client.id')
                 ->leftJoin('seller', 'package.seller_id', '=', 'seller.id')
                 ->where(['con.flight_id' => $request->flight, 'package.in_baku' => 1])
-                ->where('package.sms_sent', '<>', 1)
-                ->where('package.is_warehouse', '<>', 3) //
-                ->whereNull('package.customs_date')
-                ->whereNull('package.delivered_by')
-                ->select('package.number', 'client.phone1 as phone', 'package.id', 'package.client_id', 'client.client_sent_sms', 'package.is_warehouse', 'client.name', 'client.surname', 'client.email', 'seller.name as store','package.seller_id', 'package.hash', 'package.sms_sent', 'client.language', 'c.name_az as country')
-                ->orderBy('package.client_id')
-                ->get();
+                // ->where('package.sms_sent', '<>', 1)
+                // ->where('package.is_warehouse', '<>', 3) //
+                // ->whereNull('package.customs_date')
+                // ->whereNull('package.delivered_by')
+                ->select('package.number', 'client.phone1 as phone', 'package.id', 'package.client_id', 'client.client_sent_sms', 'package.is_warehouse', 'client.name', 'client.surname', 'client.email', 'seller.name as store','package.seller_id', 'package.hash', 'package.sms_sent', 'client.language', 'c.name_az as country','flt.id as flight_id','flt.name as flight_name','package.branch_id as branch_id')
+                ->orderBy('package.client_id');
+                // ->get();
+
+            if ($request->branch){
+                $packages->where('package.branch_id', $request->branch);
+            }
+            $packages = $packages->get();
+
+            return response()->json($packages);
+
 
 
             if (count($packages) == 0) {
@@ -107,7 +117,8 @@ class ChangeStatusController extends HomeController
                 }
             }
 
-            $send_notification = $this->in_baku_notification($packages, $email);
+            // $send_notification = $this->in_baku_notification($packages, $email);
+            $send_notification = true;
 
             if (!$send_notification) {
                 if (Auth::user()->role() == 1) {
@@ -120,6 +131,7 @@ class ChangeStatusController extends HomeController
                 }
             }
 
+            // return response()->json($email);
 
            Flight::where('id', $request->flight)->update(['status_in_baku_date' => Carbon::now()]);
 
@@ -128,6 +140,9 @@ class ChangeStatusController extends HomeController
             $track = $packages->pluck('number')->toArray();
             //$this->sendNotificationMethod($userGroup, $country, 15, $track);
 
+            if ($request->branch){
+                return response(['case' => 'success', 'title' => 'Success!', 'content' => 'Status changed for the packages in selected flight and branch!']);
+            }
             if (Auth::user()->role() == 1) {
                 Session::flash('message', 'Status changed for the packages in selected flight!');
                 Session::flash('class', 'success');

@@ -16,6 +16,13 @@
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
 	      rel="stylesheet">
 	{{--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css">--}}
+
+
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
 	<script>
     if (navigator.userAgent.toLowerCase()
                  .indexOf('firefox') > -1) {
@@ -57,7 +64,7 @@
 												class="headline grey lighten-2"
 												primary-title
 								>
-									Privacy Policy
+									Flight
 								</v-card-title>
 								<v-card-text>
 									<v-select
@@ -69,6 +76,14 @@
 													v-model="flight_id"
 													label="Flight"
 									></v-select>
+									<v-select
+										:items="{{$branches}}"
+										item-text="name"
+										item-value="id"
+										v-model="branch_id"
+										label="Branch"
+										>
+									</v-select>
 								</v-card-text>
 
 								<v-divider></v-divider>
@@ -91,7 +106,7 @@
 					</div>
 				</template>
 			</div>
-			<div class="new flex">
+			<div class="new">
 				<v-btn
 								color="#6779fb"
 								href="{{route('warehouse_detained_at_customs_page')}}"
@@ -135,13 +150,95 @@
 		</div>
 	</v-app>
 </header>
-<div id="distributor">
+<div id="distributor" class="mt-3">
 
-	<my-distributor my-route="{{route('distributor_change_position')}}"
-	                admin="{{Auth::user()->username }}"></my-distributor>
+
+<div class="container mb-5">
+	<button data-toggle="modal" 
+		data-target="#changeFlightStatusByWarehouseModal"
+		class="btn btn-info ml">  
+			Change flight Status by warehouse 
+	</button>
 </div>
 
-<script src="{{ asset('js/distributor.js?ver=0.0.1') }}"></script>
+	<my-distributor my-route="{{route('distributor_change_position')}}" admin="{{Auth::user()->username }}"></my-distributor>
+
+	
+
+
+<div class="modal" id="changeFlightStatusByWarehouseModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Change Flight Status</h2>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="flight">Flight</label>
+                <select name="flight" id="flight" class="form-control">
+										@foreach($flights as $key => $flight)
+										<option value="{{$flight->id}}"  {{ $key == "0" ? "selected" : "" }}  >{{$flight->name}}</option>
+										@endforeach
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="branch">Branch</label>
+                <select name="branch" id="branch" class="form-control">
+									@foreach($branches as $key => $branch)
+										<option value="{{$branch->id}}"  {{ $key == "0" ? "selected" : "" }}   >{{$branch->name}}</option>
+									@endforeach
+                </select>
+            </div>
+        </div>
+        <div class="modal-footer">
+					<button class="btn btn-danger" data-dismiss="modal"   >Cancel</button>
+					<button class="btn btn-primary" id="save">Change Status</button>
+        </div>
+    </div>
+</div>
+
+
+
+
+</div>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+<script src="{{ asset('js/distributor.js?ver=1.0') }}"> </script>
+
+<script>
+	document.getElementById('save').addEventListener('click', function () {
+		// console.log("ee")
+		let selectedFlight = document.querySelector(".modal [name='flight']").value
+		let selectedBranch = document.querySelector(".modal [name='branch']").value
+		axios.post('{{ route('warehouse_post_packages_in_baku') }}', { 'flight': selectedFlight, "branch" : selectedBranch })
+		.then(function (resp) {
+		// console.log("waay")
+			if (resp.data.case === 'success') {
+				location.reload()
+			} else {
+				// _this.loadingButton = false
+				Swal.fire({
+					type : 'error',
+					title: "Something went wrong (13)",
+					text : resp.data.content,
+				})
+			}
+		})
+		.catch(function (resp) {
+			_this.loadingButton = false
+			Swal.fire({
+				type : 'error',
+				title: "Something went wrong (14)",
+				text : resp.data.content,
+			})
+		})
+	})
+	 
+
+</script>
+
 </body>
 
 </html>

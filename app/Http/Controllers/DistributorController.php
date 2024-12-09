@@ -31,7 +31,8 @@ class DistributorController extends HomeController
     }
 
     public function index()
-    {
+    {   
+
         try {
             $flights = Flight::whereNull('flight.deleted_by')
                 ->whereNull('flight.status_in_baku_date')
@@ -39,10 +40,14 @@ class DistributorController extends HomeController
                 ->take(100)
                 ->select('flight.id', 'flight.name')
                 ->get();
+             
+            $branches = DB::table("filial")->where("is_active", 1)->get();
+            // $branches = $branches->toJson();
+            // dd($branches);
 
             // dd($flights->toJson());
 
-            return view('backend.warehouse.distributor', compact('flights'));
+            return view('backend.warehouse.distributor', compact('flights','branches'));
         } catch (\Exception $exception) {
             return view('backend.error');
         }
