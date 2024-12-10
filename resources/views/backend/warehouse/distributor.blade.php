@@ -213,21 +213,21 @@
 		let selectedFlight = document.querySelector(".modal [name='flight']").value
 		let selectedBranch = document.querySelector(".modal [name='branch']").value
 		axios.post('{{ route('warehouse_post_packages_in_baku') }}', { 'flight': selectedFlight, "branch" : selectedBranch })
-		.then(function (resp) {
+		.then(function (response) {
 		// console.log("waay")
-			if (resp.data.case === 'success') {
+			if (response.data.case === 'success') {
 				location.reload()
 			} else {
 				// _this.loadingButton = false
 				Swal.fire({
 					type : 'error',
 					title: "Something went wrong (13)",
-					text : resp.data.content,
+					text : response.data.content,
 				})
 			}
 		})
 		.catch(function (resp) {
-			_this.loadingButton = false
+			// _this.loadingButton = false
 			Swal.fire({
 				type : 'error',
 				title: "Something went wrong (14)",

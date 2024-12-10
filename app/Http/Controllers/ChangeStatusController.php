@@ -138,7 +138,7 @@ class ChangeStatusController extends HomeController
             $userGroup = $packages->pluck('client_id')->toArray();
             $country = $packages->pluck('country')->toArray();
             $track = $packages->pluck('number')->toArray();
-            //$this->sendNotificationMethod($userGroup, $country, 15, $track);
+            // $this->sendNotificationMethod($userGroup, $country, 15, $track);
 
             if ($request->branch){
                 return response(['case' => 'success', 'title' => 'Success!', 'content' => 'Status changed for the packages in selected flight and branch!']);
