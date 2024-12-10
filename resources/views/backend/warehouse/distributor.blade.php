@@ -115,22 +115,6 @@
 				
 					Detained at Customs
 				</v-btn>
-				<v-btn
-								color="#6779fb"
-								href="{{route('warehouse_change_package_branch_view')}}"
-								dark
-				>
-					Change Package Branch
-				</v-btn>
-
-				<v-btn
-								color="#6779fb"
-								href="{{route('warehouse_change_package_in_baku_view')}}"
-								dark
-				>
-					Change Package in Baku
-				</v-btn>
-
 			</div>
 			<div class="back">
 				<a href="{{url()->previous()}}">
@@ -154,11 +138,44 @@
 
 
 <div class="container mb-5">
+
+
+<!-- <v-btn
+								color="#6779fb"
+								href="{{route('warehouse_change_package_branch_view')}}"
+								dark
+				>
+					Change Package Branch
+				</v-btn>
+
+				<v-btn
+								color="#6779fb"
+								dark
+				>
+					Change Package in Baku
+				</v-btn> -->
+
+
+	
+	<a  class="btn btn-info ml" href="{{route('warehouse_change_package_branch_view')}}"
+		>  
+			Change package branch 
+	</a>
+
+	<a
+		data-target="#changeFlightStatusByWarehouseModal"
+		href="{{route('warehouse_change_package_in_baku_view')}}"
+		class="btn btn-info ml">  
+			Change package in baku 
+	</a>
+
 	<button data-toggle="modal" 
 		data-target="#changeFlightStatusByWarehouseModal"
 		class="btn btn-info ml">  
 			Change flight Status by warehouse 
 	</button>
+
+	
 </div>
 
 	<my-distributor my-route="{{route('distributor_change_position')}}" admin="{{Auth::user()->username }}"></my-distributor>
