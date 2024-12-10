@@ -212,7 +212,7 @@
 		// console.log("ee")
 		let selectedFlight = document.querySelector(".modal [name='flight']").value
 		let selectedBranch = document.querySelector(".modal [name='branch']").value
-		axios.post('{{ route('warehouse_post_packages_in_baku') }}', { 'flight': selectedFlight, "branch" : selectedBranch })
+		axios.post('/warehouse/distributor/change-status/in-baku', { 'flight': selectedFlight, "branch" : selectedBranch })
 		.then(function (response) {
 		// console.log("waay")
 			if (response.data.case === 'success') {
