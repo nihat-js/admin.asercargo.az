@@ -80,11 +80,11 @@ class ChangeStatusController extends HomeController
                 ->where('package.is_warehouse', '<>', 3) //
                 ->whereNull('package.customs_date')
                 ->whereNull('package.delivered_by')
-                ->select('package.number', 'client.phone1 as phone', 'package.id', 'package.client_id', 'client.client_sent_sms', 'package.is_warehouse', 'client.name', 'client.surname', 'client.email', 'seller.name as store','package.seller_id', 'package.hash', 'package.sms_sent', 'client.language', 'c.name_az as country','flt.id as flight_id','flt.name as flight_name','package.branch_id as branch_id')
+                ->select('package.number', 'client.phone1 as phone', 'package.id', 'package.client_id', 'client.client_sent_sms', 'package.is_warehouse', 'client.name', 'client.surname', 'client.email', 'seller.name as store', 'package.seller_id', 'package.hash', 'package.sms_sent', 'client.language', 'c.name_az as country', 'flt.id as flight_id', 'flt.name as flight_name', 'package.branch_id as branch_id')
                 ->orderBy('package.client_id');
-                // ->get();
+            // ->get();
 
-            if ($request->branch){
+            if ($request->branch) {
                 $packages->where('package.branch_id', $request->branch);
             }
             $packages = $packages->get();
@@ -94,6 +94,9 @@ class ChangeStatusController extends HomeController
 
 
             if (count($packages) == 0) {
+                if ($request->branch) {
+                    return response(['case' => 'warning', 'title' => 'Warning!', 'content' => 'Packages not found in selected flight and branch!']);
+                }
                 if (Auth::user()->role() == 1) {
                     Session::flash('message', 'Packages not found!');
                     Session::flash('class', 'warning');
@@ -133,14 +136,14 @@ class ChangeStatusController extends HomeController
 
             // return response()->json($email);
 
-           Flight::where('id', $request->flight)->update(['status_in_baku_date' => Carbon::now()]);
+            Flight::where('id', $request->flight)->update(['status_in_baku_date' => Carbon::now()]);
 
             $userGroup = $packages->pluck('client_id')->toArray();
             $country = $packages->pluck('country')->toArray();
             $track = $packages->pluck('number')->toArray();
             // $this->sendNotificationMethod($userGroup, $country, 15, $track);
 
-            if ($request->branch){
+            if ($request->branch) {
                 return response(['case' => 'success', 'title' => 'Success!', 'content' => 'Status changed for the packages in selected flight and branch!']);
             }
             if (Auth::user()->role() == 1) {
@@ -214,7 +217,7 @@ class ChangeStatusController extends HomeController
 
                 // dd($package->hash);
 
-                if($package->seller_id != 1338 && $package->hash == null){
+                if ($package->seller_id != 1338 && $package->hash == null) {
                     // dd('tst');
                     // send sms
                     if ($package->client_sent_sms != 0 && $package->client_id != 0 && $package->client_id != null && $package->phone != null && $package->sms_sent == 2) {
@@ -222,75 +225,72 @@ class ChangeStatusController extends HomeController
                             // new client
                             $language_for_sms = strtoupper($package->language);
                             switch ($language_for_sms) {
-                                case 'AZ':
-                                    {
-                                        array_push($phone_arr_az, $package->phone);
-                                    }
+                                case 'AZ': {
+                                    array_push($phone_arr_az, $package->phone);
+                                }
                                     break;
-                                case 'EN':
-                                    {
-                                        array_push($phone_arr_en, $package->phone);
-                                    }
+                                case 'EN': {
+                                    array_push($phone_arr_en, $package->phone);
+                                }
                                     break;
-                                case 'RU':
-                                    {
-                                        array_push($phone_arr_ru, $package->phone);
-                                    }
+                                case 'RU': {
+                                    array_push($phone_arr_ru, $package->phone);
+                                }
                                     break;
                             }
-    
+
                             $client_id_for_sms = $package->client_id;
                         }
                     }
-    
+
                     //send email
                     if ($package->client_id != 0 && $package->client_id != null && $package->email != null) {
                         if ($package->client_id != $client_id_for_email) {
                             // new client
                             if ($client_id_for_email != 0) {
                                 $email_content = str_replace('{list_inside}', $list_insides, $email_content);
-    
+
                                 // $job = (new CollectorInWarehouseJob($email_to, $email_title, $email_subject, $email_content, $email_bottom, $email_button))
                                 //     ->delay(Carbon::now()->addSeconds(10));
                                 // dispatch($job);
                             }
-    
+
                             $list_insides = '';
-    
+
                             $language = $package->language;
                             $language = strtolower($language);
-    
+
                             $email_title = $email->{'title_' . $language}; //from
                             $email_subject = $email->{'subject_' . $language};
                             $email_bottom = $email->{'content_bottom_' . $language};
                             $email_button = $email->{'button_name_' . $language};
                             $email_content = $email->{'content_' . $language};
                             $email_list_inside = $email->{'list_inside_' . $language};
-    
+
                             $email_push_content = $email->{'push_content_' . $language};
                             $email_push_content = str_replace('{tracking_number}', $package->number, $email_push_content);
 
                             $list_inside = $email_list_inside;
-    
+
                             $no++;
                             $list_inside = str_replace('{tracking_number}', $package->number, $list_inside);
                             $list_inside = str_replace('{no}', $no, $list_inside);
-    
+
                             $list_insides .= $list_inside;
-    
+
                             $email_to = $package->email;
                             $client = $package->name . ' ' . $package->surname;
                             $email_content = str_replace('{name_surname}', $client, $email_content);
-    
+
                             $client_id_for_email = $package->client_id;
                         } else {
                             // same client
                             $list_inside = $email_list_inside;
-    
+
                             $no++;
                             $list_inside = str_replace('{tracking_number}', $package->number, $list_inside);
                             $list_inside = str_replace('{no}', $no, $list_inside);
-    
+
                             $list_insides .= $list_inside;
                         }
                     }
@@ -308,7 +308,7 @@ class ChangeStatusController extends HomeController
                 $email_content = str_replace('{list_inside}', $list_insides, $email_content);
 
                 // $job = (new CollectorInWarehouseJob($email_to, $email_title, $email_subject, $email_content, $email_bottom, $email_button))
-                    // ->delay(Carbon::now()->addSeconds(10));
+                // ->delay(Carbon::now()->addSeconds(10));
                 // dispatch($job);
             }
 
@@ -336,7 +336,7 @@ class ChangeStatusController extends HomeController
 
                 if ($send_bulk_sms[0] == true) {
                     $response = simplexml_load_string($send_bulk_sms[1], 'SimpleXMLElement', LIBXML_NOCDATA);
-                    $json = json_decode(json_encode((array)$response), TRUE);
+                    $json = json_decode(json_encode((array) $response), TRUE);
 
                     if (isset($json['head']['responsecode'])) {
                         $response_code = $json['head']['responsecode'];
@@ -397,7 +397,7 @@ class ChangeStatusController extends HomeController
 
                 if ($send_bulk_sms[0] == true) {
                     $response = simplexml_load_string($send_bulk_sms[1], 'SimpleXMLElement', LIBXML_NOCDATA);
-                    $json = json_decode(json_encode((array)$response), TRUE);
+                    $json = json_decode(json_encode((array) $response), TRUE);
 
                     if (isset($json['head']['responsecode'])) {
                         $response_code = $json['head']['responsecode'];
@@ -458,7 +458,7 @@ class ChangeStatusController extends HomeController
 
                 if ($send_bulk_sms[0] == true) {
                     $response = simplexml_load_string($send_bulk_sms[1], 'SimpleXMLElement', LIBXML_NOCDATA);
-                    $json = json_decode(json_encode((array)$response), TRUE);
+                    $json = json_decode(json_encode((array) $response), TRUE);
 
                     if (isset($json['head']['responsecode'])) {
                         $response_code = $json['head']['responsecode'];
@@ -528,62 +528,52 @@ class ChangeStatusController extends HomeController
         }
         try {
             switch ($request->status_id) {
-                case 2:
-                    {
-                        // paid
-                        return $this->paid_status($request->package_id, $request->from_balance);
-                    }
+                case 2: {
+                    // paid
+                    return $this->paid_status($request->package_id, $request->from_balance);
+                }
                     break;
-                case 10:
-                    {
-                        // unpaid
-                        return $this->unpaid_status($request->package_id, $request->back_paid);
-                    }
+                case 10: {
+                    // unpaid
+                    return $this->unpaid_status($request->package_id, $request->back_paid);
+                }
                     break;
-                case 15:
-                    {
-                        // in baku
-                        return $this->in_baku_status($request->package_id);
-                    }
+                case 15: {
+                    // in baku
+                    return $this->in_baku_status($request->package_id);
+                }
                     break;
-                case 3:
-                    {
-                        // delivered
-                        return $this->delivered_status($request->package_id);
-                    }
+                case 3: {
+                    // delivered
+                    return $this->delivered_status($request->package_id);
+                }
                     break;
-                case 14:
-                    {
-                        // on the way
-                        return $this->on_the_way_status($request->package_id);
-                    }
+                case 14: {
+                    // on the way
+                    return $this->on_the_way_status($request->package_id);
+                }
                     break;
-                case 29:
-                    {
-                        // detained smart custom
-                        return $this->detained_smart_custom($request->package_id);
-                    }
+                case 29: {
+                    // detained smart custom
+                    return $this->detained_smart_custom($request->package_id);
+                }
                     break;
-                case 37:
-                    {
+                case 37: {
                     // not declared
                     return $this->not_declared_status($request->package_id);
-                    }
+                }
                     break;
-                case 42:
-                    {
-                        // out of delivery
-                        return $this->out_of_delivery($request->package_id, $request->status_id);
-                    }
+                case 42: {
+                    // out of delivery
+                    return $this->out_of_delivery($request->package_id, $request->status_id);
+                }
                     break;
-                case 43:
-                    {
-                        // hold by customer
-                        return $this->hold_by_customer($request->package_id, $request->status_id);
-                    }
+                case 43: {
+                    // hold by customer
+                    return $this->hold_by_customer($request->package_id, $request->status_id);
+                }
                     break;
-                default:
-                {
+                default: {
                     return response(['case' => 'warning', 'title' => 'Oops!', 'content' => 'Wrong status!']);
                 }
             }
@@ -600,99 +590,99 @@ class ChangeStatusController extends HomeController
                 ->where('id', $package_id)
                 ->select('id', 'last_status_id', 'client_id', 'number', 'gross_weight as weight')
                 ->first();
-       
+
             if (!$package) {
                 return response(['case' => 'warning', 'title' => 'Warning!', 'content' => 'Package not found!']);
             }
 
 
-             // variables for email
-             $email_to = '';
-             $email_title = '';
-             $email_subject = '';
-             $email_bottom = '';
-             $email_button = '';
-             $email_content = '';
-             $email_list_inside = '';
-             $list_insides = '';
- 
-             $email = EmailListContent::where(['type' => 'detained_at_customs'])->first();
- 
-             if (!$email) {
-                 return response(['case' => 'warning', 'title' => 'Warning!', 'content' => 'Email template not found!']);
-             }
- 
-             $client_id = 0;
-             $no = 0;
-            
-                 PackageStatus::create(['package_id'=>$package->id, 'status_id'=>29, 'created_by' => Auth::id()]); // custom status
-             
-        
-                 //send email
-                 if ($package->client_id != 0 && $package->client_id != null && $package->client->email != null) {
-                
-                    if ($package->client_id != $client_id) {
-      
-                         // new client
-                        if ($client_id != 0) {
-                            $email_content = str_replace('{list_inside}', $list_insides, $email_content);
+            // variables for email
+            $email_to = '';
+            $email_title = '';
+            $email_subject = '';
+            $email_bottom = '';
+            $email_button = '';
+            $email_content = '';
+            $email_list_inside = '';
+            $list_insides = '';
 
-                            $job = (new CollectorInWarehouseJob($email_to, $email_title, $email_subject, $email_content, $email_bottom, $email_button))
-                                ->delay(Carbon::now()->addSeconds(10));
-                            dispatch($job);
-                        }
-                  
-                         $list_insides = '';
- 
-                         $language = $package->client->language;
-                         $language = strtolower($language);
- 
-                         $email_title = $email->{'title_' . $language}; //from
-                         $email_subject = $email->{'subject_' . $language};
-                         $email_bottom = $email->{'content_bottom_' . $language};
-                         $email_button = $email->{'button_name_' . $language};
-                         $email_content = $email->{'content_' . $language};
-                         $email_list_inside = $email->{'list_inside_' . $language};
-                         $list_inside = $email_list_inside;
-                         $no++;
-                         $list_inside = str_replace('{tracking_number}', $package->number, $list_inside);
-                         $list_inside = str_replace('{weight}', $package->weight . ' kg', $list_inside);
-                         $list_inside = str_replace('{no}', $no, $list_inside);
-         
-                         
-                         $list_insides .= $list_inside;
-                        
-                         $email_to = $package->client->email;
-                         $client = $package->client->name . ' ' . $package->client->surname;
-                         $email_content = str_replace('{name_surname}', $client, $email_content);
-                        
-                         $client_id = $package->client_id;
-                     } else {
-                         // same client
-                         $list_inside = $email_list_inside;
-                         $no++;
-                         $list_inside = str_replace('{tracking_number}', $package->number, $list_inside);
-                         $list_inside = str_replace('{weight}', $package->weight, $list_inside);
-                         $list_inside = str_replace('{no}', $no, $list_inside);
- 
-                         $list_insides .= $list_inside;
-                     }
+            $email = EmailListContent::where(['type' => 'detained_at_customs'])->first();
 
-                     $content_detained_customs = empty($email_push_content) ? $email_content : $email_push_content;
-                     $this->notification->sendNotification($email_title, $email_subject, $content_detained_customs, $package->client_id);
-                 }
-        
+            if (!$email) {
+                return response(['case' => 'warning', 'title' => 'Warning!', 'content' => 'Email template not found!']);
+            }
+
+            $client_id = 0;
+            $no = 0;
+
+            PackageStatus::create(['package_id' => $package->id, 'status_id' => 29, 'created_by' => Auth::id()]); // custom status
+
+
+            //send email
+            if ($package->client_id != 0 && $package->client_id != null && $package->client->email != null) {
+
+                if ($package->client_id != $client_id) {
+
+                    // new client
+                    if ($client_id != 0) {
+                        $email_content = str_replace('{list_inside}', $list_insides, $email_content);
+
+                        $job = (new CollectorInWarehouseJob($email_to, $email_title, $email_subject, $email_content, $email_bottom, $email_button))
+                            ->delay(Carbon::now()->addSeconds(10));
+                        dispatch($job);
+                    }
+
+                    $list_insides = '';
+
+                    $language = $package->client->language;
+                    $language = strtolower($language);
+
+                    $email_title = $email->{'title_' . $language}; //from
+                    $email_subject = $email->{'subject_' . $language};
+                    $email_bottom = $email->{'content_bottom_' . $language};
+                    $email_button = $email->{'button_name_' . $language};
+                    $email_content = $email->{'content_' . $language};
+                    $email_list_inside = $email->{'list_inside_' . $language};
+                    $list_inside = $email_list_inside;
+                    $no++;
+                    $list_inside = str_replace('{tracking_number}', $package->number, $list_inside);
+                    $list_inside = str_replace('{weight}', $package->weight . ' kg', $list_inside);
+                    $list_inside = str_replace('{no}', $no, $list_inside);
+
+
+                    $list_insides .= $list_inside;
+
+                    $email_to = $package->client->email;
+                    $client = $package->client->name . ' ' . $package->client->surname;
+                    $email_content = str_replace('{name_surname}', $client, $email_content);
+
+                    $client_id = $package->client_id;
+                } else {
+                    // same client
+                    $list_inside = $email_list_inside;
+                    $no++;
+                    $list_inside = str_replace('{tracking_number}', $package->number, $list_inside);
+                    $list_inside = str_replace('{weight}', $package->weight, $list_inside);
+                    $list_inside = str_replace('{no}', $no, $list_inside);
+
+                    $list_insides .= $list_inside;
+                }
+
+                $content_detained_customs = empty($email_push_content) ? $email_content : $email_push_content;
+                $this->notification->sendNotification($email_title, $email_subject, $content_detained_customs, $package->client_id);
+            }
+
             //  dd('test');
- 
-             // send email
-             if ($client_id != 0) {
-                 $email_content = str_replace('{list_inside}', $list_insides, $email_content);
-                 $job = (new CollectorInWarehouseJob($email_to, $email_title, $email_subject, $email_content, $email_bottom, $email_button))
-                     ->delay(Carbon::now()->addSeconds(10));
-                 dispatch($job);
-             }
 
-            Package::where('id', $package_id)->update(['customs_notification'=>1]);
+            // send email
+            if ($client_id != 0) {
+                $email_content = str_replace('{list_inside}', $list_insides, $email_content);
+                $job = (new CollectorInWarehouseJob($email_to, $email_title, $email_subject, $email_content, $email_bottom, $email_button))
+                    ->delay(Carbon::now()->addSeconds(10));
+                dispatch($job);
+            }
+
+            Package::where('id', $package_id)->update(['customs_notification' => 1]);
 
             ChangeStatusLog::create([
                 'package_id' => $package_id,
@@ -719,11 +709,11 @@ class ChangeStatusController extends HomeController
             }
 
             Package::where('id', $packageId)->update([
-            //               'carrier_status_id' => 0,
-            //               'carrier_registration_number' => null,
-               'delivered_by' => null,
-               'customs_date' => null,
-               'on_the_way_date' => null,
+                //               'carrier_status_id' => 0,
+                //               'carrier_registration_number' => null,
+                'delivered_by' => null,
+                'customs_date' => null,
+                'on_the_way_date' => null,
             ]);
             PackageStatus::create([
                 'package_id' => $packageId,
@@ -761,7 +751,8 @@ class ChangeStatusController extends HomeController
                 'customs_date' => null,
                 'is_warehouse' => 2,
                 'on_the_way_date' => Carbon::now()
-            ]);;
+            ]);
+            ;
 
             PackageStatus::create([
                 'package_id' => $package_id,
@@ -1150,7 +1141,7 @@ class ChangeStatusController extends HomeController
 
             $flights = Flight::whereNull('flight.deleted_by')
                 //->whereNull('flight.status_in_baku_date')
-               // ->where('flight.public', 3)
+                // ->where('flight.public', 3)
                 ->whereNotNull('flight.closed_at')
                 ->orderBy('flight.id', 'desc')
                 ->take(100)
@@ -1302,7 +1293,7 @@ class ChangeStatusController extends HomeController
 
             PackageStatus::insert($packageStatuses);
 
-            if($reg_status == 48 || $reg_status == 50){
+            if ($reg_status == 48 || $reg_status == 50) {
                 $userGroup = $packages->pluck('client_id')->toArray();
                 $country = $packages->pluck('country')->toArray();
                 $tracking = $packages->pluck('number')->toArray();
@@ -1324,18 +1315,19 @@ class ChangeStatusController extends HomeController
         }
     }
 
-    public function sendNotificationMethod($userGroup, $country, $status, $tracking = null){
+    public function sendNotificationMethod($userGroup, $country, $status, $tracking = null)
+    {
         $groupedArray = array_count_values($userGroup);
         $uniqueValues = array_keys($groupedArray);
         $firstValueOfCountry = reset($country);
         $packageList = implode(', ', $tracking);
         $email = '';
 
-        if($status == 48){
+        if ($status == 48) {
             $email = EmailListContent::where(['type' => 'custom_control_started'])->first();
-        }else if($status == 50){
+        } else if ($status == 50) {
             $email = EmailListContent::where(['type' => 'released_from_custom'])->first();
-        }else if($status == 15){
+        } else if ($status == 15) {
             $email = EmailListContent::where(['type' => 'in_baku'])->first();
         }
         //dd($tracking);

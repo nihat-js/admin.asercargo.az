@@ -221,7 +221,7 @@
 				// _this.loadingButton = false
 				Swal.fire({
 					type : 'error',
-					title: "Something went wrong (13)",
+					title: response?.data?.title,
 					text : response.data.content,
 				})
 			}
@@ -231,7 +231,7 @@
 			Swal.fire({
 				type : 'error',
 				title: "Something went wrong (14)",
-				text : resp.data.content,
+				text : resp.data?.content,
 			})
 		})
 	})
